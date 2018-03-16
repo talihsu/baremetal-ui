@@ -1,2 +1,2 @@
 # baremetal-ui
-Horizon UI plugin (Ocata)
+Horizon UI plugin
