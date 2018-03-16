@@ -1,4 +1,4 @@
-# Horizon UI Plugin
+# Horizon UI Plugin (Ocata)
 ------
 BareMetal
  * Ocata version.
