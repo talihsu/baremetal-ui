@@ -1,0 +1,21 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block form_id %}compose_node_form{% endblock %}
+{% block form_action %}{% url 'horizon:admin:baremetal:compose' %}{% endblock %}
+
+{% block modal_id %}compose_node_modal{% endblock %}
+{% block modal-header %}{% trans "Add Node" %}{% endblock %}
+
+{% block modal-body %}
+<div class="left">
+    <fieldset>
+        {% include "horizon/common/_form_fields.html" %}
+    </fieldset>
+</div>
+<div class="right">
+    
+    <h3>{% trans "Description:" %}</h3>
+    <p>{% trans "Specify the OpenStack server role that you want. A node will be composed as the selected one."%}</p>
+</div>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% load i18n sizeformat %}
+
+<div class="detail">
+  <dl class="dl-horizontal">
+    <dt>{% trans "Name" %}</dt>
+    <dd>{{ node.name|default:_("None") }}</dd>
+    <dt>{% trans "ID" %}</dt>
+    <dd>{{ node.uuid|default:_("None") }}</dd>
+    <dt>{% trans "Serial Number" %}</dt>
+    <dd>{{ node.serial_num }}</dd>
+    <dt>{% trans "Manufacturer" %}</dt>
+    <dd>{{ node.manufacturer }}</dd>
+    <dt>{% trans "Model" %}</dt>
+    <dd>{{ node.model }}</dd>
+    
+    {% if node.systems|length > 0 %}
+        <dt>{% trans "Power" %}</dt>
+        <dd>{{ node.systems.0.power_state }}</dd>
+    {% endif %}
+
+    {% if node.manager %}
+        {% if node.manager|length > 0 %}
+            {% if node.manager.0.ethernet_interfaces %}
+                {% if node.manager.0.ethernet_interfaces|length > 0 %}
+                    {% if node.manager.0.ethernet_interfaces.0.ipv4_addrs %}
+                        {% if node.manager.0.ethernet_interfaces.0.ipv4_addrs|length > 0 %}
+                            <dt>{% trans "BMC IP Address" %}</dt>
+                            <dd>{{ node.manager.0.ethernet_interfaces.0.ipv4_addrs.0 }}</dd>
+                        {% endif %} 
+                    {% endif %} 
+                {% endif %} 
+            {% endif %} 
+        {% endif %}             
+    {% endif %} 
+    
+    {% if node.provision %}
+        {% if node.provision.nics %}
+            {% if node.provision.nics|length > 0 %}            
+                <dt>{% trans "OS IP Address" %}</dt>
+                {% for nic in node.provision.nics %}
+                    <dd>{{ nic.ips.0 }}</dd>
+                {% endfor %} 
+            {% endif %} 
+        {% endif %}             
+    {% endif %}     
+    
+    <dt>{% trans "Created" %}</dt>
+    {% if node.created_at %}
+      <dd>{{ node.created_at }}</dd>
+    {% else %}
+      <dd>{% trans "Unknown" %}</dd>
+    {% endif %}
+    <dt>{% trans "Updated" %}</dt>
+    {% if node.updated_at %}
+      <dd>{{ node.updated_at }}</dd>
+    {% else %}
+      <dd>{% trans "Never updated" %} }}</dd>
+    {% endif %}
+    <br>
+  </dl>
+
+  <h4>{% trans "Processor" %}</h4>
+  <hr class="header_rule">
+  <dl class="dl-horizontal">
+  {% if node.systems|length > 0 %}
+    {% for processor in node.systems.0.processors %}
+        <dt>{% trans "Socket" %}</dt>
+        <dd>{{ processor.socket }}</dd>
+        <dt>{% trans "Manufacturer" %}</dt>
+        <dd>{{ processor.manufacturer }}</dd>
+        <dt>{% trans "Instruction Set" %}</dt>
+        <dd>{{ processor.instruction_set }}</dd>
+        <dt>{% trans "Model" %}</dt>
+        <dd>{{ processor.model }}</dd>
+        <dt>{% trans "Total Cores" %}</dt>
+        <dd>{{ processor.cores }}</dd>
+        <dt>{% trans "Total Threads" %}</dt>
+        <dd>{{ processor.threads }}</dd>
+        <br>
+    {% endfor %}
+  {% endif %}
+  </dl>
+
+  <h4>{% trans "Memory" %}</h4>
+  <hr class="header_rule">
+  <dl class="dl-horizontal">
+  {% if node.systems|length > 0 %}
+    {% for ram in node.systems.0.memory %}
+        <dt>{% trans "Capacity" %}</dt>
+        <dd>{{ ram.capacity_gb|floatformat }} GB</dd>
+        <dt>{% trans "Device Type" %}</dt>
+        <dd>{{ ram.device_type }}</dd>
+        <dt>{% trans "Locator" %}</dt>
+        <dd>{{ ram.locator }}</dd>
+        <dt>{% trans "Voltage" %}</dt>
+        {% if ram.speed_mhz %}
+            <dd>{{ ram.voltage }}V</dd>
+        {% else %}
+            <dd>{{ ram.voltage }}</dd>
+        {% endif %}
+        <dt>{% trans "Serial Number" %}</dt>
+        <dd>{{ ram.serial_num }}</dd>
+        <dt>{% trans "Data Width (Bits)" %}</dt>
+        <dd>{{ ram.data_width }}</dd>
+        <dt>{% trans "Operating Speed" %}</dt>
+        {% if ram.speed_mhz %}
+            <dd>{{ ram.speed_mhz }} MHz</dd>
+        {% else %}
+            <dd>{{ ram.speed_mhz }}</dd>
+        {% endif %}
+        <dt>{% trans "Manufacturer" %}</dt>
+        <dd>{{ ram.manufacturer }}</dd>
+        <dt>{% trans "Rank Count" %}</dt>
+        <dd>{{ ram.rank_count }}</dd>
+        <br>
+    {% endfor %}
+  {% endif %}  
+  </dl>
+  
+  <h4>{% trans "Ethernet" %}</h4>
+  <hr class="header_rule">
+  <dl class="dl-horizontal">
+  {% if node.systems|length > 0 %}
+    {% if node.systems.0.ethernet_interfaces %}
+        {% if node.systems.0.ethernet_interfaces|length > 0 %}
+            <dt>{% trans "MAC Address" %}</dt>
+            {% for interface in node.systems.0.ethernet_interfaces %}
+                <dd>{{ interface.mac_addr }}</dd>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+  {% endif %}
+  </dl>
+  <br>
+  
+  <h4>{% trans "Local Drives" %}</h4>
+  <hr class="header_rule">
+  <dl class="dl-horizontal">
+  {% if node.local_drives|length > 0 %}
+    {% for drive in node.local_drives %}
+        <dt>{% trans "Capacity" %}</dt>
+        <dd>{{ drive.capacity_gb|floatformat }} GB</dd>
+        <dt>{% trans "ID" %}</dt>
+        <dd>{{ drive.id }}</dd>
+        <dt>{% trans "Serial Number" %}</dt>
+        <dd>{{ drive.serial_num }}</dd>
+        <dt>{% trans "Model" %}</dt>
+        <dd>{{ drive.model|default:_("None") }}</dd>
+        <dt>{% trans "Type" %}</dt>
+        <dd>{{ drive.type }}</dd>
+        <dt>{% trans "Protocol" %}</dt>
+        <dd>{{ drive.protocol }}</dd>
+        <br>
+    {% endfor %}
+  {% endif %}
+  </dl>
+</div>

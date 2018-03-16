@@ -1,0 +1,17 @@
+{% load i18n %}
+
+{% if state == "available" %}
+    <h4>{{ os_name }}</h4>
+    <ul>
+    {% for address in ips %}
+        <li>{{ address }}</li>
+    {% endfor %}
+    </ul>
+{% elif state == "error" %}
+    <h4>{{ error_msg }}</h4>
+{% else %}
+    <h4>None</h4>  
+{% endif %}
+
+    
+   
